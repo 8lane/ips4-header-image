@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin name="Header Image by IPS Themes" version_long="10002" version_human="1.0.2" author="Tom Christian" website="http://ipsthemes.com" update_check="http://ipsthemes.com/ips4-update-check.php?type=plugin&amp;name=Header%20Image"><hooks><hook type="S" class="\IPS\Theme\class_core_front_global"><![CDATA[//<?php
+
+class hook102 extends _HOOK_CLASS_
+{
+
+/* !Hook Data - DO NOT REMOVE */
+public static function hookData() {
+ return array_merge_recursive( array (
+  'globalTemplate' => 
+  array (
+    0 => 
+    array (
+      'selector' => 'html > head',
+      'type' => 'add_inside_end',
+      'content' => '<style>
+#ipsLayout_header header {
+  background-color: {setting="ipsthemesHeaderImage_color"};
+  background-image: url({file="\IPS\Settings::i()->ipsthemesHeaderImage_image" extension="core_Theme"});
+  background-repeat: no-repeat;
+  background-position: {setting="ipsthemesHeaderImage_position"};
+  background-size: cover;
+  {{if \IPS\Settings::i()->ipsthemesHeaderImage_fixed}}
+  	background-attachment: fixed;
+  {{endif}}
+}
+</style>',
+    ),
+  ),
+), parent::hookData() );
+}
+/* End Hook Data */
+
+
+
+
+}]]></hook></hooks><settings><setting><key>ipsthemesHeaderImage_color</key><default>#3d5e78</default></setting><setting><key>ipsthemesHeaderImage_image</key><default/></setting><setting><key>ipsthemesHeaderImage_size</key><default>cover</default></setting><setting><key>ipsthemesHeaderImage_fixed</key><default/></setting><setting><key>ipsthemesHeaderImage_repeat</key><default>no-repeat</default></setting><setting><key>ipsthemesHeaderImage_position</key><default>initial</default></setting></settings><settingsCode><![CDATA[//<?php
+
+$form->addHeader('ipsthemesHeaderImage_settings');
+
+/* Color */
+$form->add( new \IPS\Helpers\Form\Color( 'ipsthemesHeaderImage_color', \IPS\Settings::i()->ipsthemesHeaderImage_color ) );
+
+/* Image */
+$form->add( new \IPS\Helpers\Form\Upload( 'ipsthemesHeaderImage_image', \IPS\File::get( 'core_Theme', \IPS\Settings::i()->ipsthemesHeaderImage_image ), FALSE, array( 'storageExtension' => 'core_Theme', 'multiple' => false, 'image' => TRUE ), NULL, NULL, NULL, 'ipsthemesHeaderImage_image' ) );
+
+/* Repeat */
+$form->add( new \IPS\Helpers\Form\Select( 'ipsthemesHeaderImage_repeat', \IPS\Settings::i()->ipsthemesHeaderImage_repeat, FALSE, array(
+	'options' => array(
+		'no-repeat'   	=> 'ipsthemesHeaderImage_repeat1',
+		'repeat'   		=> 'ipsthemesHeaderImage_repeat2',
+		'repeat-x'   	=> 'ipsthemesHeaderImage_repeat3',
+		'repeat-y'   	=> 'ipsthemesHeaderImage_repeat4'
+	)
+) ), NULL, NULL, NULL, 'ipsthemesHeaderImage_repeat' );
+
+/* Position */
+$form->add( new \IPS\Helpers\Form\Select( 'ipsthemesHeaderImage_position', \IPS\Settings::i()->ipsthemesHeaderImage_position, FALSE, array(
+	'options' => array(
+		'initial'   	=> 'ipsthemesHeaderImage_position1',
+		'center'   		=> 'ipsthemesHeaderImage_position2',
+		'top'   		=> 'ipsthemesHeaderImage_position3',
+		'bottom'   		=> 'ipsthemesHeaderImage_position4'
+	)
+) ), NULL, NULL, NULL, 'ipsthemesHeaderImage_position' );
+
+/* Size */
+$form->add( new \IPS\Helpers\Form\Select( 'ipsthemesHeaderImage_size', \IPS\Settings::i()->ipsthemesHeaderImage_size, FALSE, array(
+	'options' => array(
+		'initial'   	=> 'ipsthemesHeaderImage_size1',
+		'cover'   		=> 'ipsthemesHeaderImage_size2',
+		'contain'   	=> 'ipsthemesHeaderImage_size3'
+	)
+) ), NULL, NULL, NULL, 'ipsthemesHeaderImage_size' );
+
+/* Fixed */
+$form->add( new \IPS\Helpers\Form\YesNo( 'ipsthemesHeaderImage_fixed', \IPS\Settings::i()->ipsthemesHeaderImage_fixed ) );
+
+if ( $values = $form->values() )
+{
+	$form->saveAsSettings();
+	return TRUE;
+}
+
+return $form;]]></settingsCode><htmlFiles/><cssFiles/><jsFiles/><resourcesFiles/><lang><word key="ipsthemesHeaderImage_settings" js="0">Header Image Settings</word><word key="ipsthemesHeaderImage_color" js="0">Color</word><word key="ipsthemesHeaderImage_image" js="0">Image</word><word key="ipsthemesHeaderImage_repeat" js="0">Repeat</word><word key="ipsthemesHeaderImage_repeat1" js="0">No Repeat</word><word key="ipsthemesHeaderImage_repeat2" js="0">Repeat</word><word key="ipsthemesHeaderImage_repeat3" js="0">Repeat X</word><word key="ipsthemesHeaderImage_repeat4" js="0">Repeat Y</word><word key="ipsthemesHeaderImage_position" js="0">Position</word><word key="ipsthemesHeaderImage_position1" js="0">Default</word><word key="ipsthemesHeaderImage_position2" js="0">Center</word><word key="ipsthemesHeaderImage_position3" js="0">Top</word><word key="ipsthemesHeaderImage_position4" js="0">Bottom</word><word key="ipsthemesHeaderImage_size" js="0">Scaling</word><word key="ipsthemesHeaderImage_size1" js="0">Default</word><word key="ipsthemesHeaderImage_size2" js="0">Cover</word><word key="ipsthemesHeaderImage_size3" js="0">Contain</word><word key="ipsthemesHeaderImage_fixed" js="0">Fixed</word></lang><versions><version long="10000" human="1.0.0"><![CDATA[//<?php
+
+
+/* To prevent PHP errors (extending class does not exist) revealing path */
+if ( !defined( '\IPS\SUITE_UNIQUE_KEY' ) )
+{
+	header( ( isset( $_SERVER['SERVER_PROTOCOL'] ) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0' ) . ' 403 Forbidden' );
+	exit;
+}
+
+/**
+ * Install Code
+ */
+class ips_plugins_setup_install
+{
+	/**
+	 * ...
+	 *
+	 * @return	array	If returns TRUE, upgrader will proceed to next step. If it returns any other value, it will set this as the value of the 'extra' GET parameter and rerun this step (useful for loops)
+	 */
+	public function step1()
+	{
+		
+
+		return TRUE;
+	}
+	
+	// You can create as many additional methods (step2, step3, etc.) as is necessary.
+	// Each step will be executed in a new HTTP request
+}]]></version><version long="10001" human="1.0.1"><![CDATA[//<?php
+
+
+/* To prevent PHP errors (extending class does not exist) revealing path */
+if ( !defined( '\IPS\SUITE_UNIQUE_KEY' ) )
+{
+	header( ( isset( $_SERVER['SERVER_PROTOCOL'] ) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0' ) . ' 403 Forbidden' );
+	exit;
+}
+
+/**
+ * 1.0.1 Upgrade Code
+ */
+class ips_plugins_setup_upg_10001
+{
+	/**
+	 * ...
+	 *
+	 * @return	array	If returns TRUE, upgrader will proceed to next step. If it returns any other value, it will set this as the value of the 'extra' GET parameter and rerun this step (useful for loops)
+	 */
+	public function step1()
+	{
+		
+
+		return TRUE;
+	}
+	
+	// You can create as many additional methods (step2, step3, etc.) as is necessary.
+	// Each step will be executed in a new HTTP request
+}]]></version><version long="10002" human="1.0.2"><![CDATA[//<?php
+
+
+/* To prevent PHP errors (extending class does not exist) revealing path */
+if ( !defined( '\IPS\SUITE_UNIQUE_KEY' ) )
+{
+	header( ( isset( $_SERVER['SERVER_PROTOCOL'] ) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0' ) . ' 403 Forbidden' );
+	exit;
+}
+
+/**
+ * 1.0.2 Upgrade Code
+ */
+class ips_plugins_setup_upg_10002
+{
+	/**
+	 * ...
+	 *
+	 * @return	array	If returns TRUE, upgrader will proceed to next step. If it returns any other value, it will set this as the value of the 'extra' GET parameter and rerun this step (useful for loops)
+	 */
+	public function step1()
+	{
+		
+
+		return TRUE;
+	}
+	
+	// You can create as many additional methods (step2, step3, etc.) as is necessary.
+	// Each step will be executed in a new HTTP request
+}]]></version></versions></plugin>
